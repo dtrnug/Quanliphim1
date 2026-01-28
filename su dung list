@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <list>
 using namespace std;
 
 class Phim {
@@ -11,8 +12,7 @@ public:
 };
 
 int main() {
-    Phim ds[100];
-    int n = 0;
+    list<Phim> ds;
     int chon;
 
     do {
@@ -29,15 +29,15 @@ int main() {
         switch (chon) {
 
         case 1: { // Them phim moi
-            string ma;
+            Phim p;
             bool trung = false;
 
             cout << "Nhap ma phim: ";
-            cin >> ma;
+            cin >> p.ma;
 
             // Kiem tra trung ma
-            for (int i = 0; i < n; i++) {
-                if (ds[i].ma == ma)
+            for (Phim x : ds) {
+                if (x.ma == p.ma)
                     trung = true;
             }
 
@@ -46,51 +46,49 @@ int main() {
                 break;
             }
 
-            ds[n].ma = ma;
             cin.ignore();
-
             cout << "Nhap ten phim: ";
-            getline(cin, ds[n].ten);
+            getline(cin, p.ten);
 
             cout << "Nhap the loai phim: ";
-            getline(cin, ds[n].theLoai);
+            getline(cin, p.theLoai);
 
-            // Kiem tra diem hop le
             do {
                 cout << "Nhap diem danh gia (1-10): ";
-                cin >> ds[n].diem;
-            } while (ds[n].diem < 1 || ds[n].diem > 10);
+                cin >> p.diem;
+            } while (p.diem < 1 || p.diem > 10);
 
-            n++; //them 1 don vi vao bien N
+            ds.push_back(p);
             cout << "Them phim thanh cong!\n";
             break;
         }
 
         case 2: // Hien thi tat ca phim
-            if (n == 0)
+            if (ds.empty())
                 cout << "Danh sach phim rong!\n";
             else {
                 cout << "Danh sach phim:\n";
-                for (int i = 0; i < n; i++)
-                    cout << ds[i].ma << " - "
-                         << ds[i].ten << " - "
-                         << ds[i].theLoai << " - "
-                         << ds[i].diem << endl;
+                for (Phim x : ds)
+                    cout << x.ma << " - "
+                         << x.ten << " - "
+                         << x.theLoai << " - "
+                         << x.diem << endl;
             }
             break;
 
         case 3: { // Tim phim theo ma
             string ma;
+            bool found = false;
+
             cout << "Nhap ma phim can tim: ";
             cin >> ma;
 
-            bool found = false;
-            for (int i = 0; i < n; i++) {
-                if (ds[i].ma == ma) {
-                    cout << ds[i].ma << " - "
-                         << ds[i].ten << " - "
-                         << ds[i].theLoai << " - "
-                         << ds[i].diem << endl;
+            for (Phim x : ds) {
+                if (x.ma == ma) {
+                    cout << x.ma << " - "
+                         << x.ten << " - "
+                         << x.theLoai << " - "
+                         << x.diem << endl;
                     found = true;
                 }
             }
@@ -101,44 +99,44 @@ int main() {
         }
 
         case 4: { // Phim co diem cao nhat
-            if (n == 0) {
+            if (ds.empty()) {
                 cout << "Chua co phim nao!\n";
                 break;
             }
 
-            float max = ds[0].diem;
-            for (int i = 1; i < n; i++)
-                if (ds[i].diem > max)
-                    max = ds[i].diem;
+            float max = ds.begin()->diem;
+            for (Phim x : ds)
+                if (x.diem > max)
+                    max = x.diem;
 
             cout << "Phim co diem danh gia cao nhat:\n";
-            for (int i = 0; i < n; i++)
-                if (ds[i].diem == max)
-                    cout << ds[i].ma << " - "
-                         << ds[i].ten << " - "
-                         << ds[i].theLoai << " - "
-                         << ds[i].diem << endl;
+            for (Phim x : ds)
+                if (x.diem == max)
+                    cout << x.ma << " - "
+                         << x.ten << " - "
+                         << x.theLoai << " - "
+                         << x.diem << endl;
             break;
         }
 
         case 5: { // Phim co diem thap nhat
-            if (n == 0) {
+            if (ds.empty()) {
                 cout << "Chua co phim nao!\n";
                 break;
             }
 
-            float min = ds[0].diem;
-            for (int i = 1; i < n; i++)
-                if (ds[i].diem < min)
-                    min = ds[i].diem;
+            float min = ds.begin()->diem;
+            for (Phim x : ds)
+                if (x.diem < min)
+                    min = x.diem;
 
             cout << "Phim co diem danh gia thap nhat:\n";
-            for (int i = 0; i < n; i++)
-                if (ds[i].diem == min)
-                    cout << ds[i].ma << " - "
-                         << ds[i].ten << " - "
-                         << ds[i].theLoai << " - "
-                         << ds[i].diem << endl;
+            for (Phim x : ds)
+                if (x.diem == min)
+                    cout << x.ma << " - "
+                         << x.ten << " - "
+                         << x.theLoai << " - "
+                         << x.diem << endl;
             break;
         }
 
